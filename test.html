@@ -421,7 +421,7 @@
     highlighted: [],
     pieces: {
       w_king: {
-        position: '4_4',
+        position: '5_1',
         img: '&#9812;',
         captured: false,
         moved: false,
@@ -672,6 +672,7 @@
 				
 
 				switch (main.variables.pieces[selectedpiece].type) {
+					case 'b_king':
 					case 'w_king':
 						for (let index = parseInt(position.x)-1; index <= parseInt(position.x)+1; index++) {
 							for (let index1 = parseInt(position.y)-1; index1 <= parseInt(position.y)+1; index1++) {
@@ -681,26 +682,47 @@
 						}
 							
 						break;
+						case 'b_queen':
 						case 'w_queen':
 						
 							for (let index1 =1; index1 <= 8;index1++) {
 									cordinates.push(index1+"_"+position.x);
 									cordinates.push(position.y+"_"+index1);
-									cordinates.push((index1+parseInt(position.y))+'_'+(parseInt(position.x)+index1));
-									cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)-index1));
-									cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)+index1));
-									cordinates.push((parseInt(position.y)+index1)+'_'+(parseInt(position.x)-index1));
+									if((index1+parseInt(position.x))<9&&(index1+parseInt(position.y))<9){
+										cordinates.push((index1+parseInt(position.y))+'_'+(parseInt(position.x)+index1));
 									}
+									if((parseInt(position.y)-index1)>0 && (parseInt(position.x)-index1)>0){
+										cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)-index1));
+									}
+									if((parseInt(position.y)-index1)>0&&(parseInt(position.x)+index1)<9){
+										cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)+index1));
+									}
+									if((parseInt(position.y)+index1)<9&&(parseInt(position.x)-index1)>0){
+										cordinates.push((parseInt(position.y)+index1)+'_'+(parseInt(position.x)-index1));
+									}
+									
+									}
+
+							
 						
 						break;
+						case 'b_bishop':
 						case 'w_bishop':
 						
 						for(let index = 1;index<9;index++)
 						{
-									cordinates.push((index+parseInt(position.y))+'_'+(parseInt(position.x)+index));
-									cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)-index));
-									cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)+index));
-									cordinates.push((parseInt(position.y)+index)+'_'+(parseInt(position.x)-index));
+							if((index+parseInt(position.x))<9&&(index+parseInt(position.y))<9){
+								cordinates.push((index+parseInt(position.y))+'_'+(parseInt(position.x)+index));
+							}
+										if((parseInt(position.y)-index)>0 && (parseInt(position.x)-index)>0){
+											cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)-index));
+										}
+										if((parseInt(position.y)-index)>0&&(parseInt(position.x)+index)<9){
+											cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)+index));
+										}
+							if((parseInt(position.y)+index)<9&&(parseInt(position.x)-index)>0){
+								cordinates.push((parseInt(position.y)+index)+'_'+(parseInt(position.x)-index));
+							}
 						}
 						break;
 				
@@ -725,13 +747,13 @@
 						// if($('#'+arguments[j].attr('chess')=='null'))
 						// alert(arguments[j]);
 					// //	alert($('.gamecell')+'#4_4'.attr('chess'));
-						if(((main.variables.pieces[index].position)==arguments[j])&&(main.variables.turn=='w'))
+						if(((main.variables.pieces[index].position)==arguments[j])&&(main.variables.pieces[index].type.startsWith('b'))&&(main.variables.turn=='w'))
 						{
 							
 							
 								$('#'+arguments[j]).toggleClass('neonorange_txt');
 						}
-						alert(arguments[j].typeof());
+						
 					}
 
 				}
