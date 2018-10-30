@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <title>Untitled Document</title>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
 	<script src="jQuery.js"></script>
 	<script src="jquery-ui.js"></script>
 	<style>
@@ -91,6 +90,10 @@
 		.green
 		{
 			background:rgba(63,174,49,1.00) !important;
+		}
+		.red
+		{
+			background: #ff9900 !important;
 		}
 		.neonblue_txt{
 			animation: neonBlueText 1.5s ease-in-out infinite alternate;
@@ -355,7 +358,7 @@
 		<div class="cellprefix">4</div>
 		<div class="gamecell grey" id="1_4"></div>
 		<div class="gamecell" id="2_4"></div>
-		<div class="gamecell grey" id="3_4"></div>
+		<div class="gamecell grey" id="3_4" ></div>
 		<div class="gamecell" id="4_4"></div>
 		<div class="gamecell grey" id="5_4"></div>
 		<div class="gamecell" id="6_4"></div>
@@ -403,7 +406,7 @@
 		<div class="cellprefix">h</div>
 		
 		<div id="turn">It's Whites Turn</div>
-		
+		<span class="show"></span>
 		
 
 
@@ -418,7 +421,7 @@
     highlighted: [],
     pieces: {
       w_king: {
-        position: '5_1',
+        position: '4_4',
         img: '&#9812;',
         captured: false,
         moved: false,
@@ -656,22 +659,98 @@
       }
       
     },
-		moveoption: function()
+		moveoption: function(selectedpiece)
 		{
-			switch (main.variables.pieces) {
-				case 'w_king':
+			var position = {x:'',y:''}
+				position.x = main.variables.pieces[selectedpiece].position.split('_')[1];
+				position.y = main.variables.pieces[selectedpiece].position.split('_')[0];
+				var cordinates = [];
 				
-					
-					break;
+				
+
+				
+				
+
+				switch (main.variables.pieces[selectedpiece].type) {
+					case 'w_king':
+						for (let index = parseInt(position.x)-1; index <= parseInt(position.x)+1; index++) {
+							for (let index1 = parseInt(position.y)-1; index1 <= parseInt(position.y)+1; index1++) {
+									cordinates.push(index1+"_"+index);
+							}
+							
+						}
+							
+						break;
+						case 'w_queen':
+						
+							for (let index1 =1; index1 <= 8;index1++) {
+									cordinates.push(index1+"_"+position.x);
+									cordinates.push(position.y+"_"+index1);
+									cordinates.push((index1+parseInt(position.y))+'_'+(parseInt(position.x)+index1));
+									cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)-index1));
+									cordinates.push((parseInt(position.y)-index1)+'_'+(parseInt(position.x)+index1));
+									cordinates.push((parseInt(position.y)+index1)+'_'+(parseInt(position.x)-index1));
+									}
+						
+						break;
+						case 'w_bishop':
+						
+						for(let index = 1;index<9;index++)
+						{
+									cordinates.push((index+parseInt(position.y))+'_'+(parseInt(position.x)+index));
+									cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)-index));
+									cordinates.push((parseInt(position.y)-index)+'_'+(parseInt(position.x)+index));
+									cordinates.push((parseInt(position.y)+index)+'_'+(parseInt(position.x)-index));
+						}
+						break;
+				
+					default:
+						break;
+				}
+				
+			return cordinates;
 			
-				default:
-					break;
-			}
-		}
+			
+			
+		},
+		togglehighlight:function()
+		{
+
+			for(let index in main.variables.pieces)
+				{
+					
+
+					for(let j = 0;j < arguments.length;j++)
+					{
+						// if($('#'+arguments[j].attr('chess')=='null'))
+						// alert(arguments[j]);
+					// //	alert($('.gamecell')+'#4_4'.attr('chess'));
+						if(((main.variables.pieces[index].position)==arguments[j])&&(main.variables.turn=='w'))
+						{
+							
+							
+								$('#'+arguments[j]).toggleClass('neonorange_txt');
+						}
+						alert(arguments[j].typeof());
+					}
+
+				}
+				
+		},
+
 	}
 }
 	$(document).ready(function(){
+
 		main.methods.gamesetup();
+		$('.gamecell').click(function()
+		{
+		main.variables.selectedpiece=$(this).attr('chess');
+		//main.methods.moveoption(main.variables.selectedpiece);
+		main.methods.togglehighlight.apply(this,main.methods.moveoption(main.variables.selectedpiece));
+		});
+		
+
 	});
 
    
