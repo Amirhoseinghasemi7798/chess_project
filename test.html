@@ -725,6 +725,13 @@
 							}
 						}
 						break;
+						case 'w_rook':
+						case 'b_rook' :
+						for (let index1 =1; index1 <= 8;index1++) {
+							cordinates.push(index1+"_"+position.x);
+							cordinates.push(position.y+"_"+index1);
+						}
+						break;
 				
 					default:
 						break;
@@ -740,6 +747,7 @@
 
 			for(let index in main.variables.pieces)
 				{
+					
 					
 
 					for(let j = 0;j < arguments.length;j++)
